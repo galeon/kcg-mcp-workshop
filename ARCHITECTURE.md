@@ -6,12 +6,13 @@
 │   └── Cline  (MCP client)                                    │
 │         │ starts process (stdio)                             │
 │         ▼                                                    │
-│   uvx mcp-server-time     OR   uv run --with fastmcp server  │
+│   uv run --with fastmcp time_server.py                       │
+│   uv run --with fastmcp weather_server.py                    │
 │         │                              │                     │
 │         │ tools/list                   │ tools/list          │
 │         │ tools/call                   │ tools/call          │
 │         ▼                              ▼                     │
-│      OS clock                    Open-Meteo HTTPS APIs       │
+│      OS clock / zoneinfo          Open-Meteo HTTPS APIs      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -24,10 +25,16 @@
 
 | Piece | Package / command |
 |-------|-------------------|
-| Existing time server | `uvx mcp-server-time` |
-| Custom weather server framework | [`fastmcp`](https://gofastmcp.com/) via `uv run --with fastmcp` |
+| Existing time server (Step 1) | In-repo `01-add-existing-server/time_server.py` via `uv run --with fastmcp` |
+| Custom weather server (Step 3–4) | `03-build-weather-server/.../weather_server.py` via `uv run --with fastmcp` |
+| Framework | [`fastmcp`](https://gofastmcp.com/) |
 | Weather data | Open-Meteo (no API key) |
 
 ## Why FastMCP?
 
 It turns a Python function + docstring into an MCP tool (JSON schema included) with very little boilerplate — ideal for a first server.
+
+## Why a local time server (not `uvx mcp-server-time`)?
+
+Public `mcp-server-time` has broken against newer `mcp` releases (`McpError` vs `MCPError`).  
+Shipping a tiny pre-built server in the repo keeps the lab reliable while still teaching “configure an existing server.”

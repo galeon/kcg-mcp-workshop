@@ -20,12 +20,18 @@ Students can:
 ## Before class (T−1 day)
 
 - [ ] Clone/copy `kcg-mcp-workshop` onto lab image or share Git URL  
-- [ ] Pre-install: VS Code, Cline, Python 3.10+, `uv`/`uvx` (Node LTS optional only)  
+- [ ] Pre-install: VS Code, Cline, Python 3.10+, `uv` (Node LTS optional only)  
 - [ ] Pre-warm caches on one lab account:
 
 ```bash
-uvx mcp-server-time --help
 uv run --with fastmcp python -c "import fastmcp; print('fastmcp-ok')"
+uv run --with fastmcp python -c "
+import importlib.util
+p='01-add-existing-server/time_server.py'
+s=importlib.util.spec_from_file_location('t', p)
+m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
+print(m._now_in_tz('Asia/Kolkata'))
+"
 curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true" | head -c 200
 ```
 
@@ -97,7 +103,7 @@ If only **90 min**, cut Step 2 second prompt and make Step 3 “copy solution af
 
 | After | Action |
 |-------|--------|
-| 10 min on Time server red | Pair with neighbor; TA uses full path to `uvx` |
+| 10 min on Time server red | Pair with neighbor; TA checks absolute path to `time_server.py` + `uv` on PATH |
 | 15 min on starter TODOs | Switch to `solution/weather_server.py` |
 | Network blocks Open-Meteo | Instructor demo only; student still completes config + inspect tools |
 | Cline model dead | Cannot grade tool calling — fix model first |

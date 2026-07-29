@@ -44,6 +44,7 @@ Paste exactly:
 ```text
 What is the current time in Asia/Kolkata?
 Use your MCP tools to answer. Do not guess.
+Prefer the get_current_time tool if available.
 After the tool result, reply with the time and timezone only.
 ```
 

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - [ ] VS Code + Cline chat works
-- [ ] Python + uv/uvx installed (Node optional — not required)
+- [ ] Python + uv installed (Node optional — not required)
 - [ ] `./scripts/check-prereqs.sh` mostly green
 
 ## Step 1

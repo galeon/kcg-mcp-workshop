@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Quick machine check for KCG MCP Workshop
-# Required: Python, uv/uvx, Open-Meteo network
+# Required: Python, uv, Open-Meteo network
 # Optional: Node/npx (not needed for Steps 1–4)
 set -euo pipefail
 
@@ -33,13 +33,6 @@ if command -v uv >/dev/null 2>&1; then
   ok "uv $(uv --version 2>&1 | tr '\n' ' ')"
 else
   bad "uv not found — https://docs.astral.sh/uv/"
-  FAIL=1
-fi
-
-if command -v uvx >/dev/null 2>&1; then
-  ok "uvx available (Time server in Step 1)"
-else
-  bad "uvx not on PATH (install uv and restart the terminal)"
   FAIL=1
 fi
 

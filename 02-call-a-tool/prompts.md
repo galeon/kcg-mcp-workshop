@@ -3,7 +3,7 @@
 ## Time server (should call tools)
 
 ```text
-What is the current time in Asia/Kolkata? Use your MCP tools. Do not guess.
+What is the current time in Asia/Kolkata? Use get_current_time. Do not guess.
 ```
 
 ```text

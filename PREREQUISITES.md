@@ -12,7 +12,7 @@ Complete this **before** Step 1. Budget 15–30 minutes on a fresh machine.
 - [ ] Cline extension installed and signed in / model working  
 - [ ] You can open the Cline chat panel and get a short reply  
 - [ ] Python 3.10+ (`python3 --version` or `python --version`)  
-- [ ] `uv` installed ([https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)) — also provides `uvx`  
+- [ ] `uv` installed ([https://docs.astral.sh/uv/](https://docs.astral.sh/uv/))  
 - [ ] Terminal works inside VS Code  
 - [ ] Outbound HTTPS works (browser can open [https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true](https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true))  
 
@@ -21,7 +21,7 @@ Complete this **before** Step 1. Budget 15–30 minutes on a fresh machine.
 - [ ] Node.js 18+ (`node -v`, `npx -v`) — only if you later try npm/`npx` community MCP servers or some Cline marketplace installs  
 
 **Critical path runtimes:** VS Code + Cline + **Python** + **uv**.  
-Time server = `uvx`; weather server = `uv run --with fastmcp`. **No Node required.**
+Time + weather servers both use `uv run --with fastmcp`. **No Node required.**
 
 Optional helper:
 
@@ -71,8 +71,12 @@ python --version
 
 ## 4. uv (required)
 
-`uv` runs Python MCP servers and tools quickly without messy global installs.  
-`uvx` (installed with uv) runs the Time server in Step 1.
+`uv` runs Python MCP servers quickly without messy global installs.  
+Both the pre-built Time server and your Weather server start with:
+
+```bash
+uv run --with fastmcp /path/to/server.py
+```
 
 ### macOS / Linux
 
@@ -80,7 +84,6 @@ python --version
 curl -LsSf https://astral.sh/uv/install.sh | sh
 # restart terminal, then:
 uv --version
-uvx --version
 ```
 
 ### Windows (PowerShell)
@@ -88,7 +91,6 @@ uvx --version
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 uv --version
-uvx --version
 ```
 
 Docs: [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/)

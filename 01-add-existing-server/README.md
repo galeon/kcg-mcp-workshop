@@ -1,9 +1,14 @@
 # Step 1 — Add an existing MCP server and inspect tools
 
-**Goal:** Connect Cline to a ready-made MCP server and **read** the tools it exposes.
+**Goal:** Connect Cline to a **pre-built** MCP server (you did not write it) and **read** the tools it exposes.
 
 **Time:** 15–20 minutes  
-**Server:** Time (`mcp-server-time`) — no API key, works offline after install  
+**Server:** Time — shipped in this repo as [`time_server.py`](./time_server.py)  
+**Runtime:** `uv` + `fastmcp` (same stack as the weather server later; **no Node**)
+
+> Why not `uvx mcp-server-time`?  
+> That public package is currently broken against new `mcp` releases (`McpError` vs `MCPError`).  
+> A local pre-built server keeps the lab reliable while still teaching “add someone else’s server.”
 
 ---
 
@@ -15,30 +20,45 @@
 
 ---
 
-## 1.1 Why Time (not weather yet)?
-
-We start with **Time** so Step 1 does not depend on campus Wi‑Fi.  
-Weather comes when **you** build the server in Step 3.
-
-Mental model:
+## 1.1 Mental model
 
 | Piece | In this step |
 |-------|----------------|
 | Client | Cline inside VS Code |
-| Server | `mcp-server-time` (community/reference style tool) |
+| Server | `time_server.py` (pre-built in this folder) |
 | Transport | stdio (Cline runs a local command) |
 
 ---
 
 ## 1.2 Pre-flight in a terminal
 
+From the **repo root** (`kcg-mcp-workshop`):
+
 ```bash
-uvx mcp-server-time --help
+# Resolve absolute path (you will paste this into Cline JSON)
+realpath 01-add-existing-server/time_server.py
 ```
 
-First run may download the package. That is expected.
+```powershell
+# Windows PowerShell
+(Resolve-Path .\01-add-existing-server\time_server.py).Path
+```
 
-If `uvx` is missing, finish [PREREQUISITES.md](../PREREQUISITES.md).
+Smoke-test the helpers (optional):
+
+```bash
+uv run --with fastmcp python -c "
+import importlib.util
+p = '01-add-existing-server/time_server.py'
+s = importlib.util.spec_from_file_location('t', p)
+m = importlib.util.module_from_spec(s); s.loader.exec_module(m)
+print(m._now_in_tz('Asia/Kolkata'))
+"
+```
+
+You should see a dict with `datetime` and `timezone`.
+
+> Running the server file alone starts **stdio MCP** and can look “hung”. That is normal. Ctrl+C. Cline will spawn it correctly.
 
 ---
 
@@ -62,7 +82,8 @@ If the file is empty or new, start from this skeleton:
 
 ## 1.4 Add the Time server
 
-Merge the following entry into `mcpServers` (keep any servers you already have).
+Merge the following into `mcpServers`.  
+**Replace** `/ABS/PATH/TO/kcg-mcp-workshop` with your real absolute path from step 1.2.
 
 ### macOS / Linux
 
@@ -70,8 +91,13 @@ Merge the following entry into `mcpServers` (keep any servers you already have).
 {
   "mcpServers": {
     "time": {
-      "command": "uvx",
-      "args": ["mcp-server-time"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "fastmcp",
+        "/ABS/PATH/TO/kcg-mcp-workshop/01-add-existing-server/time_server.py"
+      ],
       "disabled": false,
       "autoApprove": []
     }
@@ -81,14 +107,19 @@ Merge the following entry into `mcpServers` (keep any servers you already have).
 
 ### Windows
 
-Often the same, if `uvx` is on PATH:
+Prefer forward slashes in the path:
 
 ```json
 {
   "mcpServers": {
     "time": {
-      "command": "uvx",
-      "args": ["mcp-server-time"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "fastmcp",
+        "D:/path/to/kcg-mcp-workshop/01-add-existing-server/time_server.py"
+      ],
       "disabled": false,
       "autoApprove": []
     }
@@ -96,16 +127,11 @@ Often the same, if `uvx` is on PATH:
 }
 ```
 
-If Cline cannot find `uvx`, use the **full path** from PowerShell:
+If Cline cannot find `uv`, set `"command"` to the full path from:
 
-```powershell
-where.exe uvx
-```
-
-Example:
-
-```json
-"command": "C:\\Users\\YOU\\.local\\bin\\uvx.exe"
+```bash
+which uv          # macOS / Linux
+where.exe uv      # Windows
 ```
 
 A copy-paste sample also lives in [`cline-mcp.time.example.json`](./cline-mcp.time.example.json).
@@ -120,6 +146,11 @@ Save the file.
 2. Find **time**  
 3. It should show as connected / available (not error/red)  
 4. Expand it and open the **tools** list  
+
+Expected tools (names may match exactly):
+
+- `get_current_time` — current time in a timezone  
+- `convert_time` — convert HH:MM between timezones  
 
 If it fails, see [TROUBLESHOOTING.md](../TROUBLESHOOTING.md).
 
@@ -145,15 +176,6 @@ Answer in your notes:
 
 **Teaching point:**  
 The model does not magically know the API. It reads this schema.
-
----
-
-## 1.7 Optional: marketplace path
-
-Some Cline builds offer an MCP marketplace/install UI.  
-You may install from there **if** you still end up with a working `time` server and can inspect tools the same way.
-
-If marketplace install fails, use the manual JSON above — it is the reliable path.
 
 ---
 

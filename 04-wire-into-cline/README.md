@@ -55,8 +55,13 @@ Replace `/ABS/PATH/weather_server.py` with your real path.
 {
   "mcpServers": {
     "time": {
-      "command": "uvx",
-      "args": ["mcp-server-time"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "fastmcp",
+        "/ABS/PATH/TO/kcg-mcp-workshop/01-add-existing-server/time_server.py"
+      ],
       "disabled": false,
       "autoApprove": []
     },
