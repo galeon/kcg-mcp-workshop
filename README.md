@@ -86,6 +86,7 @@ kcg-mcp-workshop/
 ├── README.md                 ← you are here
 ├── PREREQUISITES.md
 ├── TROUBLESHOOTING.md
+├── ARCHITECTURE.md           ← client/server diagram
 ├── 01-add-existing-server/
 ├── 02-call-a-tool/
 ├── 03-build-weather-server/
