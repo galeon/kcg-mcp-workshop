@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """
-KCG MCP Workshop — SOLUTION weather MCP server
+KCG MCP Workshop — weather MCP server (complete, ready to run)
 
 Live weather via Open-Meteo (no API key).
+
+Students add this as a second MCP server in Cline (Step 3), then study
+the code structure in Step 4.
 
 Run under Cline with:
   uv run --with fastmcp /absolute/path/to/weather_server.py

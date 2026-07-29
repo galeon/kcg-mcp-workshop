@@ -14,15 +14,16 @@
 - [ ] Approved the tool call and got a real timezone answer
 
 ## Step 3
-- [ ] Filled starter TODOs **or** understood the solution file
-- [ ] `fetch_weather("Chennai")` works in terminal
-
-## Step 4
 - [ ] `weather-tools` connected in Cline
 - [ ] `get_current_weather` visible
 - [ ] Live city weather via chat (tool call seen)
 
+## Step 4
+- [ ] Can point to `FastMCP`, `@mcp.tool`, and `mcp.run()` in the weather file
+- [ ] Can explain stdio (“looks hung alone”) in one sentence
+
 ## Exit ticket (write answers)
 1. MCP client we used: _______________
 2. Why weather needs a tool: _______________
-3. Absolute path to my server file: _______________
+3. Absolute path to weather server: _______________
+4. What `@mcp.tool` does: _______________

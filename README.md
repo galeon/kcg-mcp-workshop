@@ -4,10 +4,10 @@
 
 A self-paced, hands-on workshop for college students. You will:
 
-1. Add an **existing** MCP server and **inspect** its tools  
+1. Add an **existing** MCP server (time) and **inspect** its tools  
 2. Use a **prompt** that calls a tool and returns a real answer  
-3. **Create** your own simplest MCP server (live weather)  
-4. **Wire** that server into Cline and try it yourself  
+3. Add a **second** complete server (weather) and try it live  
+4. **Read the Python code** and learn how MCP servers are structured  
 
 No prior MCP experience required. Basic Python + comfort with VS Code helps.
 
@@ -23,11 +23,11 @@ Large language models are great at language and weak at **live facts**.
 The model still talks; the **tool** fetches truth.
 
 ```text
-Your prompt → Cline (MCP client) → MCP server (tools) → real world (time API, weather API)
+Your prompt → Cline (MCP client) → MCP server (tools) → real world (clock, weather API)
               ← natural language answer grounded in tool results ←
 ```
 
-Today you will **consume** a tool, then **produce** one.
+Today you **consume** two servers, then **open the code** to see how a server is built — learning from a working implementation instead of blank TODOs under time pressure.
 
 ---
 
@@ -35,11 +35,11 @@ Today you will **consume** a tool, then **produce** one.
 
 | Step | Folder | What you do | Time |
 |------|--------|-------------|------|
-| 0 | [PREREQUISITES.md](./PREREQUISITES.md) | Install VS Code, Cline, Python, uv (Node optional) | 15–30 min (once) |
-| 1 | [01-add-existing-server](./01-add-existing-server/) | Add Time MCP server; inspect tools | 15–20 min |
-| 2 | [02-call-a-tool](./02-call-a-tool/) | Prompt Cline so it calls the tool | 10–15 min |
-| 3 | [03-build-weather-server](./03-build-weather-server/) | Build `get_current_weather(city)` | 25–40 min |
-| 4 | [04-wire-into-cline](./04-wire-into-cline/) | Register your server; try it live | 15–20 min |
+| 0 | [PREREQUISITES.md](./PREREQUISITES.md) | VS Code, Cline, Python, uv | 15–30 min (once) |
+| 1 | [01-add-existing-server](./01-add-existing-server/) | Add Time MCP; inspect tools | 15–20 min |
+| 2 | [02-call-a-tool](./02-call-a-tool/) | Prompt Cline to call time tools | 10–15 min |
+| 3 | [03-add-weather-server](./03-add-weather-server/) | Add complete weather MCP; try it | 15–25 min |
+| 4 | [04-understand-mcp-code](./04-understand-mcp-code/) | Walk through Python/FastMCP structure | 20–30 min |
 
 **Total:** ~90–120 minutes if prerequisites are done.
 
@@ -60,22 +60,28 @@ open PREREQUISITES.md   # or open in VS Code
 
 Then open this folder in **VS Code** and start at Step 1.
 
+Repo: https://github.com/galeon/kcg-mcp-workshop
+
 ---
 
-## What you will build
+## What you will run
 
-A tiny Python MCP server:
+### 1) Time server (pre-built)
 
-- **Name:** `weather-tools`  
-- **Tool:** `get_current_weather(city: str)`  
-- **Data:** [Open-Meteo](https://open-meteo.com/) (free, **no API key**)  
-- **Returns:** temperature °C, wind, weather description, coordinates  
+- Path: `01-add-existing-server/time_server.py`  
+- Tools: `get_current_time`, `convert_time`  
 
-Starter code (fill in the blanks):  
-`03-build-weather-server/starter/weather_server.py`
+### 2) Weather server (complete sample)
 
-Working solution (use only if stuck):  
-`03-build-weather-server/solution/weather_server.py`
+- Path: `03-add-weather-server/weather_server.py`  
+- Tool: `get_current_weather(city)`  
+- Data: [Open-Meteo](https://open-meteo.com/) (free, **no API key**)  
+
+Both start the same way:
+
+```bash
+uv run --with fastmcp /absolute/path/to/server.py
+```
 
 ---
 
@@ -83,18 +89,15 @@ Working solution (use only if stuck):
 
 ```text
 kcg-mcp-workshop/
-├── README.md                 ← you are here
+├── README.md
 ├── PREREQUISITES.md
 ├── TROUBLESHOOTING.md
-├── ARCHITECTURE.md           ← client/server diagram
-├── 01-add-existing-server/
-├── 02-call-a-tool/
-├── 03-build-weather-server/
-│   ├── README.md
-│   ├── starter/
-│   └── solution/
-├── 04-wire-into-cline/
-├── facilitator/              ← for instructors
+├── ARCHITECTURE.md
+├── 01-add-existing-server/     ← time server + Step 1
+├── 02-call-a-tool/             ← prompts for tool calling
+├── 03-add-weather-server/      ← weather server + Step 3
+├── 04-understand-mcp-code/     ← code walkthrough (Step 4)
+├── facilitator/
 ├── scripts/
 └── assets/
 ```
@@ -105,11 +108,11 @@ kcg-mcp-workshop/
 
 By the end you can:
 
-- Explain MCP in one sentence (client, server, tools)  
+- Explain MCP in one sentence (client, server, tools, stdio)  
 - Add a stdio MCP server to **Cline** via JSON config  
 - Read a tool’s name, description, and parameters  
-- Write a minimal Python MCP server with FastMCP  
-- Call your own tool from Cline with a natural-language prompt  
+- Point to `@mcp.tool` and `mcp.run()` in a Python FastMCP server  
+- Call time and weather tools from Cline with natural-language prompts  
 
 ---
 
@@ -119,7 +122,8 @@ By the end you can:
 2. Prefer **absolute paths** in MCP config (especially on Windows).  
 3. **Approve tool calls** when Cline asks — know what you are allowing.  
 4. Do not commit API keys (this workshop needs none for weather).  
-5. If the network blocks Open-Meteo, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
+5. If the network blocks Open-Meteo, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).  
+6. Do **not** use bare `uvx mcp-server-time` (broken upstream); use the in-repo time server.
 
 ---
 

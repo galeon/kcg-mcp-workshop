@@ -26,7 +26,7 @@
 | Piece | Package / command |
 |-------|-------------------|
 | Existing time server (Step 1) | In-repo `01-add-existing-server/time_server.py` via `uv run --with fastmcp` |
-| Custom weather server (Step 3–4) | `03-build-weather-server/.../weather_server.py` via `uv run --with fastmcp` |
+| Weather server (Step 3; studied in Step 4) | `03-add-weather-server/weather_server.py` via `uv run --with fastmcp` |
 | Framework | [`fastmcp`](https://gofastmcp.com/) |
 | Weather data | Open-Meteo (no API key) |
 

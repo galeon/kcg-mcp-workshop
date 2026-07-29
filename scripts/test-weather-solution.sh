@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Smoke-test the SOLUTION weather helpers (not the MCP stdio loop).
+# Smoke-test the weather server helpers (not the MCP stdio loop).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SOL="$ROOT/03-build-weather-server/solution"
+SOL="$ROOT/03-add-weather-server"
 
-echo "Testing solution fetch_weather()..."
+echo "Testing weather fetch_weather()..."
 uv run --with fastmcp python - <<PY
 import sys
 sys.path.insert(0, r"$SOL")

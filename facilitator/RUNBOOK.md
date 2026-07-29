@@ -1,8 +1,9 @@
 # Facilitator runbook — KCG MCP Workshop
 
 **Audience:** college students (India-friendly examples; weather is universal)  
-**Stack:** VS Code + Cline + Python MCP + Open-Meteo  
-**Length:** 90–120 minutes (plus prereq time)
+**Stack:** VS Code + Cline + Python FastMCP + Open-Meteo  
+**Length:** 90–120 minutes (plus prereq time)  
+**Pedagogy:** consume working servers first → then read code (no blank starter under time pressure)
 
 ---
 
@@ -12,90 +13,83 @@ Students can:
 
 1. Add an existing MCP server and inspect tools  
 2. Trigger a tool call from a natural-language prompt  
-3. Build a one-tool weather MCP server  
-4. Register it in Cline and use it end-to-end  
+3. Add a second complete server (weather) and use it  
+4. Explain the Python/FastMCP structure (`FastMCP`, `@mcp.tool`, `mcp.run`, stdio)
 
 ---
 
 ## Before class (T−1 day)
 
 - [ ] Clone/copy `kcg-mcp-workshop` onto lab image or share Git URL  
-- [ ] Pre-install: VS Code, Cline, Python 3.10+, `uv` (Node LTS optional only)  
-- [ ] Pre-warm caches on one lab account:
+- [ ] Pre-install: VS Code, Cline, Python 3.10+, `uv` (Node optional)  
+- [ ] Pre-warm caches:
 
 ```bash
 uv run --with fastmcp python -c "import fastmcp; print('fastmcp-ok')"
 uv run --with fastmcp python -c "
 import importlib.util
-p='01-add-existing-server/time_server.py'
-s=importlib.util.spec_from_file_location('t', p)
-m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
-print(m._now_in_tz('Asia/Kolkata'))
+for p in [
+  '01-add-existing-server/time_server.py',
+  '03-add-weather-server/weather_server.py',
+]:
+  s=importlib.util.spec_from_file_location('m', p)
+  m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
+  print(p, 'ok')
 "
 curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true" | head -c 200
 ```
 
 - [ ] Confirm Cline model path (shared key / campus proxy / BYO)  
-- [ ] Walk the happy path yourself once on lab Wi‑Fi  
-- [ ] Prepare backup: hotspot + 60s screen recording of green path  
-- [ ] Print or project absolute-path tips for Windows  
+- [ ] Walk the happy path once on lab Wi‑Fi  
+- [ ] Backup: hotspot + 60s screen recording  
+- [ ] Absolute-path tips for Windows on a slide  
 
 ---
 
-## Room setup (T−30 min)
+## Minute-by-minute (100 min)
 
-- [ ] Share repo path / zip / Git URL  
-- [ ] Slide or whiteboard diagram:
+| Min | Block | Facilitator | Students |
+|-----|-------|-------------|----------|
+| 0–8 | Hook | Weather guess vs tool | Open repo in VS Code |
+| 8–15 | Prereq triage | Fix Cline/model | `./scripts/check-prereqs.sh` |
+| 15–35 | Step 1 | Demo MCP JSON once | Add **time**; inspect tools |
+| 35–50 | Step 2 | Project tool call | Time prompts; approve tools |
+| 50–55 | Break | — | — |
+| 55–75 | Step 3 | Circulate paths | Add **weather**; call Chennai |
+| 75–100 | Step 4 | Live code walkthrough | Annotate file; exit ticket |
+| 100–110 | Buffer | Unstick | Stretch tool or screenshot |
 
-```text
-prompt → Cline → MCP server → API/world → tool result → answer
-```
-
-- [ ] Write support channel (TA desk / WhatsApp / Slack)  
-- [ ] Identify 1–2 roaming TAs for PATH/JSON issues  
-
----
-
-## Minute-by-minute (100 min version)
-
-| Min | Block | Facilitator does | Students do |
-|-----|-------|------------------|-------------|
-| 0–8 | Hook + why MCP | Weather guess vs tool story | Listen; open repo in VS Code |
-| 8–15 | Prereq triage | Fix broken Cline/model only | `./scripts/check-prereqs.sh` |
-| 15–35 | Step 1 | Demo Configure MCP Servers once | Add `time`; inspect tools |
-| 35–50 | Step 2 | Project a successful tool call | Run prompts; approve tools |
-| 50–55 | Break / catch-up | — | — |
-| 55–85 | Step 3 | Circulate; no long lecture | Implement starter TODOs |
-| 85–100 | Step 4 | Demo one absolute path config | Wire server; call weather |
-| 100–110 | Buffer | Unstick red servers | Stretch or screenshot success |
-
-If only **90 min**, cut Step 2 second prompt and make Step 3 “copy solution after 12 min stuck.”
+If **90 min**: shorten Step 4 to sections 4.1–4.4 only; stretch = homework.
 
 ---
 
 ## Opening monologue (~45s)
 
-> “If I ask an AI the weather in Chennai *right now* and it answers without looking anything up, it is guessing or remembering something old.  
-> MCP is a standard plug for tools. Cline is the client. Today you’ll connect a ready-made time tool, watch the model call it, then build a weather tool yourself and plug it into Cline.  
-> Same pattern companies use to connect agents to GitHub, databases, and internal APIs — we’re just starting with the sky.”
+> “If I ask an AI the weather in Chennai *right now* and it answers without looking anything up, it is guessing.  
+> MCP is a standard plug for tools. Cline is the client.  
+> You’ll connect a time tool, watch the model call it, then plug in a complete weather server and use it.  
+> After it works, we open the Python file together — FastMCP, tool decorator, stdio — so you see how little code a real MCP server can be.”
 
 ---
 
-## Demo script (projector)
+## Demo script
 
-### Demo A — inspect tools
-1. Open empty-ish MCP settings  
-2. Paste `time` server  
-3. Show tools list; zoom on parameters  
+### A — Time inspect + call
+1. Add `time_server.py` with absolute path  
+2. Show tools list  
+3. Prompt Asia/Kolkata + approve  
 
-### Demo B — tool call
-1. Prompt Asia/Kolkata time with “use MCP tools”  
-2. Approve tool call slowly so room sees args  
+### B — Weather second server
+1. Terminal `fetch_weather('Chennai')`  
+2. Add `weather-tools` JSON  
+3. Prompt live weather; compare to phone  
 
-### Demo C — weather (solution path)
-1. Show `fetch_weather('Chennai')` in terminal  
-2. Add `weather-tools` JSON with **absolute** path  
-3. Prompt live weather; approve; compare to phone  
+### C — Code walk (projector on weather_server.py)
+1. `FastMCP("weather-tools")`  
+2. Helpers vs `@mcp.tool`  
+3. Docstring → description in UI  
+4. `mcp.run()` stdio  
+5. Optional: glance at `time_server.py` for two-tool pattern  
 
 ---
 
@@ -103,33 +97,25 @@ If only **90 min**, cut Step 2 second prompt and make Step 3 “copy solution af
 
 | After | Action |
 |-------|--------|
-| 10 min on Time server red | Pair with neighbor; TA checks absolute path to `time_server.py` + `uv` on PATH |
-| 15 min on starter TODOs | Switch to `solution/weather_server.py` |
-| Network blocks Open-Meteo | Instructor demo only; student still completes config + inspect tools |
-| Cline model dead | Cannot grade tool calling — fix model first |
+| 10 min red time server | Absolute path + `which uv` |
+| 10 min red weather | Network curl Open-Meteo; still do Step 4 on code |
+| Cline model dead | Fix model before any tool-call grading |
+
+There is **no starter TODO path** — if weather network fails, students still complete inspect-config + code reading.
 
 ---
 
-## Checkpoint questions (exit ticket)
+## Exit ticket
 
-1. What is the MCP client in this workshop?  
-2. What transport did we use (stdio vs HTTP)?  
-3. Why did we build weather instead of only chatting?  
+1. MCP client we used?  
+2. What does `@mcp.tool` do?  
+3. Why does running the server alone look “hung”?  
 4. Name one field returned by `get_current_weather`.  
 
 ---
 
-## Safety & hygiene
+## Safety
 
+- Leave `autoApprove` empty while teaching  
 - No unrestricted filesystem MCP on shared labs  
-- Leave `autoApprove` empty during teaching  
-- No student secrets in repo  
-- Open-Meteo only — no paid weather keys in critical path  
-
----
-
-## After class
-
-- Share solution commit / tag  
-- Optional homework: `get_weather_compare`  
-- Collect 1 photo of MCP tools list per team for attendance/credit if needed  
+- Open-Meteo only — no paid keys  

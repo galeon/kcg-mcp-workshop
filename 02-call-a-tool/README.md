@@ -102,7 +102,7 @@ Healthy behavior:
 - Model admits it has no weather tool, **or**  
 - Tries something inappropriate and fails  
 
-Either way, you now feel the gap that **your** weather server will fill in Step 3–4.
+Either way, you now feel the gap that the **weather** server will fill in Step 3.
 
 ---
 
@@ -112,7 +112,7 @@ Either way, you now feel the gap that **your** weather server will fill in Step 
 - [ ] You approved a tool call consciously  
 - [ ] You can explain: prompt → tool call → result → answer  
 
-Continue → [../03-build-weather-server/README.md](../03-build-weather-server/README.md)
+Continue → [../03-add-weather-server/README.md](../03-add-weather-server/README.md)
 
 ### Prompt cheatsheet
 

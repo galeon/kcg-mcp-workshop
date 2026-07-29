@@ -27,7 +27,7 @@ print(m._now_in_tz('Asia/Kolkata'))
 **Weather server:**
 
 ```bash
-cd 03-build-weather-server/solution
+cd 03-add-weather-server
 uv run --with fastmcp python -c "import weather_server; print(weather_server.fetch_weather('Chennai'))"
 ```
 
@@ -68,7 +68,7 @@ uvx --with 'mcp>=1.9,<1.10' mcp-server-time --help
 
 ## Model replies but never calls the tool
 
-Use stronger prompts from Step 2 / Step 4:
+Use stronger prompts from Step 2 / Step 3:
 
 - Include: **“Use your MCP tools. Do not guess.”**  
 - Name the tool if needed: **“Call get_current_time”** or **“Call get_current_weather”**  
@@ -119,6 +119,6 @@ Prefer `uv run` (bundles the env):
 
 ## Still stuck?
 
-1. Compare with `03-build-weather-server/solution/`  
+1. Compare with `03-add-weather-server/`  
 2. Validate JSON with a JSON linter  
 3. Ask a facilitator with your OS + screenshot of MCP Servers panel  
