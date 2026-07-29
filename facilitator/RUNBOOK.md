@@ -20,7 +20,7 @@ Students can:
 ## Before class (T−1 day)
 
 - [ ] Clone/copy `kcg-mcp-workshop` onto lab image or share Git URL  
-- [ ] Pre-install: VS Code, Cline, Node LTS, Python 3.10+, `uv`  
+- [ ] Pre-install: VS Code, Cline, Python 3.10+, `uv`/`uvx` (Node LTS optional only)  
 - [ ] Pre-warm caches on one lab account:
 
 ```bash

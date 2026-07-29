@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Quick machine check for KCG MCP Workshop
+# Required: Python, uv/uvx, Open-Meteo network
+# Optional: Node/npx (not needed for Steps 1–4)
 set -euo pipefail
 
 ok() { printf '  [OK] %s\n' "$*"; }
@@ -8,22 +10,10 @@ warn() { printf '  [..] %s\n' "$*"; }
 
 echo "KCG MCP Workshop — prerequisite check"
 echo "======================================"
+echo "Required for Steps 1–4:"
+echo
 
 FAIL=0
-
-if command -v node >/dev/null 2>&1; then
-  ok "node $(node -v)"
-else
-  bad "node not found (install Node.js LTS)"
-  FAIL=1
-fi
-
-if command -v npx >/dev/null 2>&1; then
-  ok "npx available"
-else
-  bad "npx not found"
-  FAIL=1
-fi
 
 PY=""
 if command -v python3 >/dev/null 2>&1; then
@@ -47,9 +37,10 @@ else
 fi
 
 if command -v uvx >/dev/null 2>&1; then
-  ok "uvx available"
+  ok "uvx available (Time server in Step 1)"
 else
-  warn "uvx not on PATH (usually installed with uv)"
+  bad "uvx not on PATH (install uv and restart the terminal)"
+  FAIL=1
 fi
 
 if command -v code >/dev/null 2>&1; then
@@ -74,8 +65,23 @@ else
 fi
 
 echo
+echo "Optional (not required for this workshop):"
+if command -v node >/dev/null 2>&1; then
+  ok "node $(node -v) (optional)"
+else
+  warn "node not found — OK to skip; only needed for npx-based community MCP servers"
+fi
+
+if command -v npx >/dev/null 2>&1; then
+  ok "npx available (optional)"
+else
+  warn "npx not found — OK to skip"
+fi
+
+echo
 if [[ "$FAIL" -eq 0 ]]; then
   echo "Result: ready for Step 1 (still install/configure Cline + model in VS Code)."
+  echo "Note: Node/npx are optional and do not block this lab."
   exit 0
 else
   echo "Result: fix items marked [!!] before the workshop critical path."

@@ -6,14 +6,22 @@ Complete this **before** Step 1. Budget 15–30 minutes on a fresh machine.
 
 ## Checklist
 
+### Required for this workshop
+
 - [ ] VS Code installed  
 - [ ] Cline extension installed and signed in / model working  
 - [ ] You can open the Cline chat panel and get a short reply  
-- [ ] Node.js 18+ (`node -v`, `npx -v`)  
 - [ ] Python 3.10+ (`python3 --version` or `python --version`)  
-- [ ] `uv` installed ([https://docs.astral.sh/uv/](https://docs.astral.sh/uv/))  
+- [ ] `uv` installed ([https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)) — also provides `uvx`  
 - [ ] Terminal works inside VS Code  
 - [ ] Outbound HTTPS works (browser can open [https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true](https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true))  
+
+### Optional (not needed for Steps 1–4)
+
+- [ ] Node.js 18+ (`node -v`, `npx -v`) — only if you later try npm/`npx` community MCP servers or some Cline marketplace installs  
+
+**Critical path runtimes:** VS Code + Cline + **Python** + **uv**.  
+Time server = `uvx`; weather server = `uv run --with fastmcp`. **No Node required.**
 
 Optional helper:
 
@@ -51,21 +59,7 @@ MCP labs fail silently when the model backend is broken.
 
 ---
 
-## 3. Node.js (for many community MCP servers)
-
-We use Node/`npx` ecosystem compatibility even though our custom server is Python.
-
-- Download: [https://nodejs.org/](https://nodejs.org/) (LTS)  
-- Verify:
-
-```bash
-node -v    # v18 or newer
-npx -v
-```
-
----
-
-## 4. Python 3.10+
+## 3. Python 3.10+
 
 ```bash
 python3 --version
@@ -75,9 +69,10 @@ python --version
 
 ---
 
-## 5. uv (recommended)
+## 4. uv (required)
 
-`uv` runs Python MCP servers and tools quickly without messy global installs.
+`uv` runs Python MCP servers and tools quickly without messy global installs.  
+`uvx` (installed with uv) runs the Time server in Step 1.
 
 ### macOS / Linux
 
@@ -85,6 +80,7 @@ python --version
 curl -LsSf https://astral.sh/uv/install.sh | sh
 # restart terminal, then:
 uv --version
+uvx --version
 ```
 
 ### Windows (PowerShell)
@@ -92,13 +88,14 @@ uv --version
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 uv --version
+uvx --version
 ```
 
 Docs: [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/)
 
 ---
 
-## 6. Quick network check (weather API)
+## 5. Quick network check (weather API)
 
 In a browser or terminal, confirm Open-Meteo responds:
 
@@ -110,7 +107,7 @@ You should see JSON containing `current_weather`.
 
 ---
 
-## 7. Know how to open Cline MCP settings
+## 6. Know how to open Cline MCP settings
 
 You will do this often:
 
@@ -140,6 +137,28 @@ You will add entries under:
 | Cline CLI (if used) | `~/.cline/mcp.json` |
 
 **Always prefer opening the file via Cline → Configure MCP Servers** so you edit the file Cline actually reads.
+
+---
+
+## 7. Node.js (optional)
+
+**Not required** for this workshop’s Steps 1–4.
+
+Install Node only if you want to explore extra community MCP servers that start with `npx`, for example:
+
+```bash
+npx -y some-mcp-package
+```
+
+- Download: [https://nodejs.org/](https://nodejs.org/) (LTS)  
+- Verify:
+
+```bash
+node -v    # v18 or newer
+npx -v
+```
+
+Lab images may still pre-install Node so students can experiment beyond the worksheet; individuals can skip it.
 
 ---
 

@@ -35,7 +35,7 @@ Today you will **consume** a tool, then **produce** one.
 
 | Step | Folder | What you do | Time |
 |------|--------|-------------|------|
-| 0 | [PREREQUISITES.md](./PREREQUISITES.md) | Install VS Code, Cline, Node, Python, uv | 15–30 min (once) |
+| 0 | [PREREQUISITES.md](./PREREQUISITES.md) | Install VS Code, Cline, Python, uv (Node optional) | 15–30 min (once) |
 | 1 | [01-add-existing-server](./01-add-existing-server/) | Add Time MCP server; inspect tools | 15–20 min |
 | 2 | [02-call-a-tool](./02-call-a-tool/) | Prompt Cline so it calls the tool | 10–15 min |
 | 3 | [03-build-weather-server](./03-build-weather-server/) | Build `get_current_weather(city)` | 25–40 min |
