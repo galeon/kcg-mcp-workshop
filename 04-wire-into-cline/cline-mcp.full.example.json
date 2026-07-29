@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time"],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "weather-tools": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "fastmcp",
+        "/ABS/PATH/TO/kcg-mcp-workshop/03-build-weather-server/solution/weather_server.py"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

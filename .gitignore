@@ -1,0 +1,30 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.code-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.python-version
+
+# uv / tooling
+.uv/
+uv.lock
+
+# Logs / local overrides
+*.log
+cline_mcp_settings.local.json
+**/mcp.local.json
+
+# Test / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
